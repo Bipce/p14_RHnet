@@ -1,72 +1,71 @@
-import { JSX } from "react";
+import React, { JSX, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container } from "@mui/material";
-import { z } from "zod";
+import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import FormTextField from "../components/FormTextField.tsx";
-import CustomButton from "../components/CustomButton.tsx";
+import InputField from "../components/Form/InputField.tsx";
+import Button from "../components/Button.tsx";
+import SelectField from "../components/Form/SelectField.tsx";
+import { IFormData } from "../models/form/FormData.ts";
+import DateField from "../components/Form/DateField.tsx";
 
-const schema = z.object({
-  firstName: z.string().min(0, { message: "Should be at least 2 characters" }),
-  lastName: z.string().min(0, { message: "Should be at least 2 characters" }),
-  birthDate: z.string().min(18, { message: "Must be 18 or older" }),
-  startDate: z.string(),
+const schema: ZodType<IFormData> = z.object({
+  firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
+  lastName: z.string().min(2, { message: "Should be at least 2 characters" }),
+  birthDate: z.string(),
+  // startDate: z.string().min(2),
   street: z.string().min(2, { message: "Should be at least 2 characters" }),
   city: z.string().min(2, { message: "Should be at least 2 characters" }),
   state: z.string().min(2, { message: "Should be at least 2 characters" }),
   zipCode: z.number().min(5, { message: "Should be at least 5 characters" }),
-  departments: z.string(),
+  departments: z.string().min(1),
 });
 
-type FormValues = z.infer<typeof schema>
-
 const Home = (): JSX.Element => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FormValues): void => {
-    console.log(data);
+  const onSubmit = (data: IFormData): void => {
+    try {
+      console.log(data, "GOOD");
+    } catch (err) {
+      console.log(err, "not good");
+    }
   };
 
   return (
-    <Container
-      className="flex size-full flex-col items-center gap-5 bg-slate-800 p-4 text-slate-50">
-      <h1 className="text-4xl font-bold">HRnet</h1>
-      <Link to="/employee-list" className="hover:text-sky-300 hover:underline">View Current Employees</Link>
+    <>
+      <h1 className="mt-3 text-4xl font-bold">HRnet</h1>
+      <Link to="/employee-list" className="hover:text-sky-300 hover:underline active:text-sky-400">View Current
+        Employees</Link>
 
-      <div
-        className="rounded-md border-2 border-slate-200 bg-slate-900 bg-gradient-to-br from-sky-800 p-8 drop-shadow-xl">
-        <h3 className="mb-5 text-2xl font-bold">Create Employee</h3>
+      <h3 className="mb-1 mt-6 text-2xl font-bold">Create Employee</h3>
 
-        <form onSubmit={handleSubmit(onSubmit)} id="create-employee">
-          <FormTextField htmlFor="first-name" label="First Name" type="text" id="first-name"
-                         register={register("firstName")} />
-          <FormTextField htmlFor="last-name" label="Last Name" type="text" id="last-name"
-                         register={register("lastName")} />
-          <FormTextField htmlFor="date-of-birth" label="Date of Birth" type="text" id="date-of-birth"
-                         register={register("birthDate")} />
-          <FormTextField htmlFor="start-date" label="Start Date" type="text" id="start-date"
-                         register={register("startDate")} />
+      <form onSubmit={handleSubmit(onSubmit)} id="create-employee" className="flex flex-col">
+        <InputField htmlFor="first-name" label="First Name" type="text" id="first-name"
+                    register={register("firstName")} />
+        <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"
+                    register={register("lastName")} />
 
-          <fieldset className="rounded border-2 p-2">
-            <legend>Address</legend>
+        <DateField htmlFor="date-of-birth" label="Date of Birth" type="text" id="date-of-birth"
+                   register={register("birthDate")} />
+        {/*<InputField htmlFor="start-date" label="Start Date" type="text" id="start-date"*/}
+        {/*            register={register("startDate")} />*/}
 
-            <FormTextField htmlFor="street" label="Street" type="text" id="street"
-                           register={register("street")} />
-            <FormTextField htmlFor="city" label="City" type="text" id="city"
-                           register={register("city")} />
-            <FormTextField htmlFor="state" label="State" type="text" id="state"
-                           register={register("state")} />
-            <FormTextField htmlFor="zipCode" label="Zip Code" type="text" id="zipCode"
-                           register={register("zipCode")} />
-            <FormTextField htmlFor="departments" label="Departments" type="text" id="departments"
-                           register={register("departments")} />
-          </fieldset>
+        <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">
+          <legend>Address</legend>
 
-          <CustomButton />
-        </form>
-      </div>
-    </Container>
+          <InputField htmlFor="street" label="Street" type="text" id="street"
+                      register={register("street")} />
+          <InputField htmlFor="city" label="City" type="text" id="city"
+                      register={register("city")} />
+          <SelectField htmlFor="state" label="State" id="state" register={register("state")} />
+          <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode"
+                      register={register("zipCode", { valueAsNumber: true })} />
+          <SelectField htmlFor="departments" label="Departments" id="departments" register={register("departments")} />
+        </fieldset>
+        <Button />
+      </form>
+    </>
   );
 };
 

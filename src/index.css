@@ -6,4 +6,37 @@
     html {
         font-family: "Roboto", system-ui, sans-serif;
     }
+
+    select:-webkit-autofill,
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px #0f172a inset;
+        box-shadow: 0 0 0 30px #0f172a inset;
+        -webkit-text-fill-color: #ffffff;
+    }
+}
+
+.react-datepicker {
+    @apply bg-sky-950 bg-gradient-to-l from-slate-900/70 border-slate-700;
+}
+
+.react-datepicker__day,
+.react-datepicker__current-month {
+    @apply text-slate-100
+}
+
+.react-datepicker__day-name {
+    @apply text-slate-100/80
+}
+
+.react-datepicker__input-container input,
+.react-datepicker-ignore-onclickoutside {
+    @apply rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-sky-600 w-full
+}
+
+.react-datepicker__header {
+    @apply bg-sky-900 text-sky-100 border-slate-700;
+}
+
+.react-datepicker__day:not([aria-disabled=true]):hover {
+    @apply bg-sky-700;
 }
