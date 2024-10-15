@@ -1,30 +1,38 @@
-import React, { JSX, useState } from "react";
+import React, { JSX } from "react";
 import { Link } from "react-router-dom";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { IData } from "../models/form/IData.ts";
 import InputField from "../components/Form/InputField.tsx";
 import Button from "../components/Button.tsx";
 import SelectField from "../components/Form/SelectField.tsx";
-import { IFormData } from "../models/form/FormData.ts";
 import DateField from "../components/Form/DateField.tsx";
 
-const schema: ZodType<IFormData> = z.object({
+const schema: ZodType<IData> = z.object({
   firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
   lastName: z.string().min(2, { message: "Should be at least 2 characters" }),
-  birthDate: z.string(),
-  // startDate: z.string().min(2),
   street: z.string().min(2, { message: "Should be at least 2 characters" }),
   city: z.string().min(2, { message: "Should be at least 2 characters" }),
   state: z.string().min(2, { message: "Should be at least 2 characters" }),
   zipCode: z.number().min(5, { message: "Should be at least 5 characters" }),
   departments: z.string().min(1),
+  birthDate: z.date({
+    required_error: "Birth date is required",
+    invalid_type_error: "Please select a valid date",
+  }),
+  startDate: z.date({
+    required_error: "Start date is required",
+    invalid_type_error: "Please select a valid date",
+  }),
 });
 
 const Home = (): JSX.Element => {
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormData>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, setValue, watch } = useForm<IData>({ resolver: zodResolver(schema) });
+  const birthDate = watch("birthDate");
+  const startDate = watch("startDate");
 
-  const onSubmit = (data: IFormData): void => {
+  const onSubmit = (data: IData): void => {
     try {
       console.log(data, "GOOD");
     } catch (err) {
@@ -45,11 +53,10 @@ const Home = (): JSX.Element => {
                     register={register("firstName")} />
         <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"
                     register={register("lastName")} />
-
-        <DateField htmlFor="date-of-birth" label="Date of Birth" type="text" id="date-of-birth"
-                   register={register("birthDate")} />
-        {/*<InputField htmlFor="start-date" label="Start Date" type="text" id="start-date"*/}
-        {/*            register={register("startDate")} />*/}
+        <DateField htmlFor="date-of-birth" label="Date of Birth" stringValue="birthDate" watch={() => birthDate}
+                   setValue={(date: Date | null) => setValue("birthDate", date!)} />
+        <DateField htmlFor="start-date" label="Start Date " stringValue="startDate" watch={() => startDate}
+                   setValue={(date: Date | null) => setValue("startDate", date!)} />
 
         <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">
           <legend>Address</legend>

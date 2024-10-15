@@ -1,8 +1,8 @@
-export interface IFormData {
+export interface IData {
   firstName: string,
   lastName: string,
-  birthDate: string,
-  // startDate: string,
+  birthDate: Date,
+  startDate: Date,
   street: string,
   city: string,
   state: string,

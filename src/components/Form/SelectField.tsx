@@ -1,25 +1,27 @@
 import React, { JSX, useEffect, useState } from "react";
-import { IFormFieldData } from "../../models/form/FormFieldData.ts";
+import { IFieldData } from "../../models/form/IFieldData.ts";
+import { IState } from "../../models/form/publicData/IState.ts";
+import { IWorkDepartment } from "../../models/form/publicData/IWorkDepartment.ts";
+import { getPublicData, getWorkDepartments } from "../../service/getPublicData.ts";
 import FieldWrapper from "./FieldWrapper.tsx";
-import { IState } from "../../models/State.ts";
-import { getStates } from "../../service/getStates.ts";
 import Error from "../../pages/Error.tsx";
 
-const SelectField: React.FC<IFormFieldData> = ({ id, register, htmlFor, label }): JSX.Element => {
+const SelectField: React.FC<IFieldData> = ({ id, register, htmlFor, label }): JSX.Element => {
   const [states, setStates] = useState<IState[]>();
-  const departments = ["Sales", "Marketing", "Engineering", "Human Resources", "Legal"];
+  const [workDepartments, setWorkDepartments] = useState<IWorkDepartment[]>();
 
   useEffect(() => {
     (async (): Promise<void> => {
       try {
-        setStates(await getStates());
+        setStates(await getPublicData());
+        setWorkDepartments(await getWorkDepartments());
       } catch (err) {
         console.log(err);
       }
     })();
   }, []);
 
-  if (!states) return <Error />;
+  if (!states || !workDepartments) return <Error />;
 
   return (
     <FieldWrapper htmlFor={htmlFor} label={label}>
@@ -27,9 +29,7 @@ const SelectField: React.FC<IFormFieldData> = ({ id, register, htmlFor, label })
               className="rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-sky-600">
         {id === "state"
           ? states.map(x => <option key={x.name} value={x.abbreviation}>{x.name}</option>)
-          : <>
-            {departments.map((x, i) => <option key={i}>{x}</option>)}
-          </>
+          : workDepartments.map((x, i) => <option key={i}>{x.name}</option>)
         }
       </select>
     </FieldWrapper>
