@@ -1,11 +1,11 @@
 export interface IData {
   firstName: string,
   lastName: string,
-  birthDate: Date,
-  startDate: Date,
+  birthDate: string | Date,
+  startDate: string | Date,
   street: string,
   city: string,
   state: string,
-  zipCode: number,
+  zipCode: string | number,
   departments: string,
 }

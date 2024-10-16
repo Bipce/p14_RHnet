@@ -28,9 +28,12 @@
     @apply text-slate-100/80
 }
 
-.react-datepicker__input-container input,
-.react-datepicker-ignore-onclickoutside {
-    @apply rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-sky-600 w-full
+.react-datepicker__input-container input {
+    @apply rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-none w-full focus:border-sky-400
+}
+
+.react-datepicker__input-container .datepicker-error {
+    @apply border-red-600;
 }
 
 .react-datepicker__header {
