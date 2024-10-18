@@ -1,13 +1,14 @@
-import React, { JSX } from "react";
+import React, { JSX, useState } from "react";
+import { IData } from "../models/form/IData.ts";
 
 const EmployeeList = (): JSX.Element => {
-  const fakeData = [
+  const fakeData: IData[] = [
     {
       firstName: "John",
       lastName: "Doe",
       startDate: "09/25/2023",
-      department: "Sales",
-      dateOfBirth: "05/12/1985",
+      departments: "Sales",
+      birthDate: "05/12/1985",
       street: "123 Main St",
       city: "New York",
       state: "NY",
@@ -17,8 +18,8 @@ const EmployeeList = (): JSX.Element => {
       firstName: "Jane",
       lastName: "Smith",
       startDate: "03/14/2022",
-      department: "Marketing",
-      dateOfBirth: "11/23/1990",
+      departments: "Marketing",
+      birthDate: "11/23/1990",
       street: "456 Oak Ave",
       city: "Los Angeles",
       state: "CA",
@@ -28,8 +29,8 @@ const EmployeeList = (): JSX.Element => {
       firstName: "Emily",
       lastName: "Johnson",
       startDate: "07/07/2021",
-      department: "Human Resources",
-      dateOfBirth: "02/10/1982",
+      departments: "Human Resources",
+      birthDate: "02/10/1982",
       street: "789 Pine Rd",
       city: "Chicago",
       state: "IL",
@@ -39,14 +40,56 @@ const EmployeeList = (): JSX.Element => {
       firstName: "Michael",
       lastName: "Brown",
       startDate: "11/01/2023",
-      department: "Engineering",
-      dateOfBirth: "08/05/1988",
+      departments: "Engineering",
+      birthDate: "08/05/1988",
       street: "101 Maple St",
       city: "Houston",
       state: "TX",
       zipCode: "77002",
     },
   ];
+
+  const [orderedList, setOrderedList] = useState<IData[]>([...fakeData]);
+
+  const handlerOrder = (e: React.MouseEvent<HTMLTableCellElement, MouseEvent>): void => {
+    const event = e.target as HTMLTableCellElement;
+    const data = fakeData.sort((a, b): number => {
+      if (event.id === "firstName") {
+        if (a.firstName < b.firstName) {
+          return -1;
+        } else if (a.firstName > b.firstName) {
+          return 1;
+        }
+      } else if (event.id === "lastName") {
+        if (a.lastName < b.lastName) {
+          return -1;
+        } else if (a.lastName > b.lastName) {
+          return 1;
+        }
+      }
+
+      if (event.id === "startDate") {
+        let dateA: Date, dateB: Date;
+
+        if (typeof a.startDate === "string") {
+          dateA = new Date(a.startDate.split("-").reverse().join("-"));
+        } else {
+          dateA = a.startDate;
+        }
+
+        if (typeof b.startDate === "string") {
+          dateB = new Date(b.startDate.split("-").reverse().join("-"));
+        } else {
+          dateB = b.startDate;
+        }
+
+        return dateA.getTime() - dateB.getTime();
+      }
+      return 0;
+    });
+
+    setOrderedList(data);
+  };
 
   return (
     <>
@@ -73,26 +116,30 @@ const EmployeeList = (): JSX.Element => {
         <caption className="hidden">Employee list</caption>
         <thead className="text-lg">
         <tr className="cursor-pointer bg-sky-950">
-          <th scope="col" className="rounded border-t border-none px-1 py-2">First Name</th>
-          <th scope="col" className="px-1 py-2">Last Name</th>
-          <th scope="col" className="px-1 py-2">Start Date</th>
-          <th scope="col" className="px-1 py-2">Department</th>
-          <th scope="col" className="px-1 py-2">Date of Birth</th>
-          <th scope="col" className="px-1 py-2">Street</th>
-          <th scope="col" className="px-1 py-2">City</th>
-          <th scope="col" className="px-1 py-2">State</th>
-          <th scope="col" className="rounded border-t border-none px-1 py-2">Zip Code</th>
+          <th scope="col" className="rounded border-t border-none px-1 py-2" id="firstName" onClick={handlerOrder}>First
+            Name
+          </th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="lastName">Last Name</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="startDate">Start Date</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="departments">Department</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="birthDate">Date of Birth</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="street">Street</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="city">City</th>
+          <th scope="col" className="px-1 py-2" onClick={handlerOrder} id="state">State</th>
+          <th scope="col" className="rounded border-t border-none px-1 py-2" onClick={handlerOrder} id="zipCode">Zip
+            Code
+          </th>
         </tr>
         </thead>
         <tbody>
-        {fakeData.map((x, i) => {
+        {orderedList.map((x, i) => {
             return (
               <tr key={x.firstName} className={i % 2 ? "bg-sky-950" : "bg-sky-900"}>
                 <td className="truncate px-1 py-3 text-center">{x.firstName}</td>
                 <td className="truncate px-1 py-3 text-center">{x.lastName}</td>
-                <td className="truncate px-1 py-3 text-center">{x.startDate}</td>
-                <td className="truncate px-1 py-3 text-center">{x.department}</td>
-                <td className="truncate px-1 py-3 text-center">{x.dateOfBirth}</td>
+                <td className="truncate px-1 py-3 text-center">{x.startDate as string}</td>
+                <td className="truncate px-1 py-3 text-center">{x.departments}</td>
+                <td className="truncate px-1 py-3 text-center">{x.birthDate as string}</td>
                 <td className="truncate px-1 py-3 text-center">{x.street}</td>
                 <td className="truncate px-1 py-3 text-center">{x.city}</td>
                 <td className="truncate px-1 py-3 text-center">{x.state}</td>
