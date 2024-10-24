@@ -1,0 +1,38 @@
+[
+  {
+    "header": "First Name",
+    "id": "firstName"
+  },
+  {
+    "header": "Last Name",
+    "id": "lastName"
+  },
+  {
+    "header": "Start Date",
+    "id": "startDate"
+  },
+  {
+    "header": "Departments",
+    "id": "departments"
+  },
+  {
+    "header": "Date of Birth",
+    "id": "birthDate"
+  },
+  {
+    "header": "Street",
+    "id": "street"
+  },
+  {
+    "header": "City",
+    "id": "city"
+  },
+  {
+    "header": "State",
+    "id": "state"
+  },
+  {
+    "header": "Zip Code",
+    "id": "zipCode"
+  }
+]
