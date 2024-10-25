@@ -12,8 +12,3 @@ export const getWorkDepartments = async (): Promise<IWorkDepartment[]> => {
   const res = await axios.get<IWorkDepartment[]>("/data/workDepartments.json");
   return res.data;
 };
-
-export const getTableHeaderCells = async (): Promise<ITableHeaderCell[]> => {
-  const res = await axios.get<ITableHeaderCell[]>("/data/tableHeaderCells.json");
-  return res.data;
-};
