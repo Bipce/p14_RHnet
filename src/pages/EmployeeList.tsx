@@ -1,11 +1,13 @@
 import React, { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { IData } from "../models/form/IData.ts";
-import Table from "../components/Table.tsx";
-import { getEmployees } from "../service/getPublicData.ts";
-import Error from "./Error.tsx";
 import { Link } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/16/solid";
+import { IData } from "../models/form/IData.ts";
+import { getEmployees } from "../service/getPublicData.ts";
+import Table from "../components/Table.tsx";
+import Error from "./Error.tsx";
+import SelectEntries from "../components/SelectEntries.tsx";
+import InputSearch from "../components/InputSearch.tsx";
 
 type FormValues = {
   userSearch: string
@@ -19,7 +21,6 @@ const EmployeeList = (): JSX.Element => {
   const [pages, setPages] = useState<number[]>([1, 2, 3]);
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
-  const optionValue = [10, 25, 50, 100];
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -44,30 +45,14 @@ const EmployeeList = (): JSX.Element => {
 
   if (!employeesList || !selectedEntries) return <Error />;
 
-  const handleOnSelectedEntries = (e: React.MouseEvent<HTMLSelectElement, MouseEvent>): void => {
-    setSelectedEntries(employeesList.slice(0, parseInt(e.currentTarget.value)).map(x => x));
-    setIsFirstTimeRender(false);
-  };
 
   return (
     <>
       <h1 className="mb-5 mt-3 text-4xl font-bold">Current Employee</h1>
       <div className="flex w-full">
-        <label htmlFor="entries" className="invisible" />
-        <div className="flex gap-0.5">
-          <span>Show</span>
-          <select defaultValue={10}
-                  className="rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-none focus:border-sky-400"
-                  id="entries" onClick={handleOnSelectedEntries}>
-            {optionValue.map(x => <option key={x} value={x}>{x}</option>)}
-          </select>
-          <span>entries</span>
-        </div>
-        <div className="ml-auto flex gap-1">
-          <label>Search:</label>
-          <input type="text" id="search" {...register("userSearch")}
-                 className="rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-none focus:border-sky-400" />
-        </div>
+        <SelectEntries list={employeesList} setEntries={setSelectedEntries}
+                       setIsFirstTimeRender={setIsFirstTimeRender} />
+        <InputSearch register={register("userSearch")} />
       </div>
 
       <Table list={searchValue ? filteredList : selectedEntries} />
