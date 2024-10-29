@@ -92,7 +92,7 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
       <tbody>
       {list.map((x, i) => {
           return (
-            <tr key={x.firstName} className={i % 2 ? "bg-sky-950" : "bg-sky-900"}>
+            <tr key={i} className={i % 2 ? "bg-sky-950" : "bg-sky-900"}>
               <td
                 className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{x.firstName}</td>
               <td className="truncate px-1 py-3 text-center">{x.lastName}</td>

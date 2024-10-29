@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IState } from "../models/form/publicData/IState.ts";
 import { IWorkDepartment } from "../models/form/publicData/IWorkDepartment.ts";
-import { ITableHeaderCell } from "../models/form/publicData/ITableHeaderCell.ts";
+import { IData } from "../models/form/IData.ts";
 
 export const getPublicData = async (): Promise<IState[]> => {
   const res = await axios.get<IState[]>("/data/states.json");
@@ -10,5 +10,10 @@ export const getPublicData = async (): Promise<IState[]> => {
 
 export const getWorkDepartments = async (): Promise<IWorkDepartment[]> => {
   const res = await axios.get<IWorkDepartment[]>("/data/workDepartments.json");
+  return res.data;
+};
+
+export const getEmployees = async (): Promise<IData[]> => {
+  const res = await axios.get<IData[]>("/data/employees.json");
   return res.data;
 };
