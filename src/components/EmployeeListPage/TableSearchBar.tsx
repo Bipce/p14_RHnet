@@ -5,7 +5,7 @@ interface IProps {
   register: UseFormRegisterReturn<"userSearch">;
 }
 
-const InputSearch: React.FC<IProps> = ({ register }): JSX.Element => {
+const TableSearchBar: React.FC<IProps> = ({ register }): JSX.Element => {
   return (
     <div className="ml-auto flex gap-1">
       <label>Search:</label>
@@ -15,4 +15,4 @@ const InputSearch: React.FC<IProps> = ({ register }): JSX.Element => {
   );
 };
 
-export default InputSearch;
+export default TableSearchBar;

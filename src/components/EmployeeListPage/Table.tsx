@@ -1,5 +1,5 @@
 import React, { JSX, useState } from "react";
-import { IData } from "../models/form/IData.ts";
+import { IData } from "../../models/form/IData.ts";
 
 interface IProps {
   list: IData[];

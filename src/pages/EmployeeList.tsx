@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/16/solid";
 import { IData } from "../models/form/IData.ts";
 import { getEmployees } from "../service/getPublicData.ts";
-import Table from "../components/Table.tsx";
+import Table from "../components/EmployeeListPage/Table.tsx";
 import Error from "./Error.tsx";
-import SelectEntries from "../components/SelectEntries.tsx";
-import InputSearch from "../components/InputSearch.tsx";
+import SelectEntries from "../components/EmployeeListPage/SelectEntries.tsx";
+import TableSearchBar from "../components/EmployeeListPage/TableSearchBar.tsx";
+import TablePagination from "../components/EmployeeListPage/TablePagination.tsx";
 
 type FormValues = {
   userSearch: string
@@ -18,7 +19,8 @@ const EmployeeList = (): JSX.Element => {
   const [selectedEntries, setSelectedEntries] = useState<IData[]>();
   const [filteredList, setFilteredList] = useState<IData[]>([]);
   const [isFirstTimeRender, setIsFirstTimeRender] = useState(true);
-  const [pages, setPages] = useState<number[]>([1, 2, 3]);
+  const [currentPage, setCurrentPage] = useState<number>();
+  const [pages, setPages] = useState<number[]>();
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
 
@@ -26,7 +28,7 @@ const EmployeeList = (): JSX.Element => {
     (async (): Promise<void> => {
       setEmployeesList(await getEmployees());
     })();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     if (employeesList && isFirstTimeRender) {
@@ -43,28 +45,39 @@ const EmployeeList = (): JSX.Element => {
     }
   }, [employeesList, searchValue]);
 
-  if (!employeesList || !selectedEntries) return <Error />;
 
+  useEffect(() => {
+    handleTablePages();
+  }, [employeesList, selectedEntries]);
+
+  const handleTablePages = (): void => {
+    const tablePagination = [];
+    if (employeesList && selectedEntries) {
+      for (let i = 1; i <= employeesList.length / selectedEntries.length; i++) {
+        tablePagination.push(i);
+      }
+      setPages(tablePagination);
+    }
+  };
+
+  if (!employeesList || !selectedEntries || !pages) return <Error />;
 
   return (
     <>
       <h1 className="mb-5 mt-3 text-4xl font-bold">Current Employee</h1>
       <div className="flex w-full">
-        <SelectEntries list={employeesList} setEntries={setSelectedEntries}
+        <SelectEntries list={employeesList} setEntries={setSelectedEntries} isOnChange={handleTablePages}
                        setIsFirstTimeRender={setIsFirstTimeRender} />
-        <InputSearch register={register("userSearch")} />
+        <TableSearchBar register={register("userSearch")} />
       </div>
 
       <Table list={searchValue ? filteredList : selectedEntries} />
 
-      <div className="flex w-full justify-between">
+      <div className="flex w-full items-center justify-between">
         <p>Showing 1 to {selectedEntries.length} of {employeesList.length} entries</p>
         <Link to="/"><HomeIcon className="size-7" /></Link>
         <div className="flex gap-3">
-          <button>Previous</button>
-          {pages.map(x => <button
-            className="rounded border border-sky-700 px-3 py-1 hover:bg-sky-900 active:border-sky-600">{x}</button>)}
-          <button>Next</button>
+          <TablePagination pages={pages} />
         </div>
       </div>
     </>
