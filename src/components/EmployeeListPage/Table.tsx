@@ -1,4 +1,5 @@
 import React, { JSX, useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/16/solid";
 import { IData } from "../../models/form/IData.ts";
 
 interface IProps {
@@ -6,6 +7,7 @@ interface IProps {
 }
 
 const Table: React.FC<IProps> = ({ list }): JSX.Element => {
+  const [isKeyClicked, setIsKeyClicked] = useState<keyof IData>();
   const [isOrdered, setIsOrdered] = useState<{ [key in keyof IData]: boolean }>({
     firstName: false,
     lastName: false,
@@ -59,6 +61,14 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     });
   };
 
+  const handleIconDownClass = (clickedKey: keyof IData): string | boolean => {
+    return isKeyClicked === clickedKey && !isOrdered[clickedKey] && "text-sky-500";
+  };
+
+  const handleIconClasses = (clickedKey: keyof IData): string | boolean => {
+    return isOrdered[clickedKey] && "text-sky-500";
+  };
+
   const columnHeaders: { [key in keyof IData]: string } = {
     firstName: "First Name",
     lastName: "Last Name",
@@ -82,17 +92,26 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
       <tr className="cursor-pointer bg-sky-950">
         {Object.keys(columnHeaders).map((x, i) =>
           <th key={x} scope="col" id={x}
-              className={`${i === 0 && "rounded-tl"} ${i === x.length + 1 && "rounded-tr"} border-none px-1 py-2`}
+              className={`${i === 0 && "rounded-tl"} ${i === x.length + 1 && "rounded-tr"} border-none p-2`}
               onClick={(event) => {
                 handleOrder(x as keyof IData, event.currentTarget.id, event);
-              }}
-          >{columnHeaders[x as keyof IData]}</th>)}
+                setIsKeyClicked(x as keyof IData);
+              }}>
+            <div className="flex gap-1">{columnHeaders[x as keyof IData]}
+              <div>
+                <ChevronUpIcon
+                  className={`size-4 ${handleIconClasses(x as keyof IData)}`} />
+                <ChevronDownIcon
+                  className={`size-4 ${handleIconDownClass(x as keyof IData)}`} />
+              </div>
+            </div>
+          </th>)}
       </tr>
       </thead>
       <tbody>
       {list.map((x, i) => {
           return (
-            <tr key={i} className={i % 2 ? "bg-sky-950" : "bg-sky-900"}>
+            <tr key={i} className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:font-bold`}>
               <td
                 className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{x.firstName}</td>
               <td className="truncate px-1 py-3 text-center">{x.lastName}</td>
