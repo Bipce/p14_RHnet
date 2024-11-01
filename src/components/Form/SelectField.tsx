@@ -28,8 +28,8 @@ const SelectField: React.FC<IFieldData> = ({ id, register, htmlFor, label }): JS
       <select id={id} {...register}
               className="rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-none focus:border-sky-400">
         {id === "state"
-          ? states.map(x => <option key={x.name} value={x.abbreviation}>{x.name}</option>)
-          : workDepartments.map((x, i) => <option key={i}>{x.name}</option>)
+          ? states.map(state => <option key={state.name} value={state.abbreviation}>{state.name}</option>)
+          : workDepartments.map((workDepartment, i) => <option key={i}>{workDepartment.name}</option>)
         }
       </select>
     </FieldWrapper>

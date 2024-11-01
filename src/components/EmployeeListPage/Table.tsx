@@ -20,6 +20,18 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     zipCode: false,
   });
 
+  const columnHeaders: { [key in keyof IData]: string } = {
+    firstName: "First Name",
+    lastName: "Last Name",
+    startDate: "Start Date",
+    departments: "Departments",
+    birthDate: "Date of Birth",
+    street: "Street",
+    city: "City",
+    state: "State",
+    zipCode: "Zip Code",
+  };
+
   const handleOrder = (clickedKey: keyof IData, property: string, e: React.MouseEvent<HTMLTableCellElement, MouseEvent>): void => {
     const event = e.currentTarget;
     const propertyType = property as keyof IData;
@@ -69,18 +81,6 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     return isOrdered[clickedKey] && "text-sky-500";
   };
 
-  const columnHeaders: { [key in keyof IData]: string } = {
-    firstName: "First Name",
-    lastName: "Last Name",
-    startDate: "Start Date",
-    departments: "Departments",
-    birthDate: "Date of Birth",
-    street: "Street",
-    city: "City",
-    state: "State",
-    zipCode: "Zip Code",
-  };
-
   //
   // -----------------------------------------Add id to interface IData-------------------------------------------------
   //
@@ -90,39 +90,39 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
       <caption className="hidden">Employee list</caption>
       <thead className="text-lg">
       <tr className="cursor-pointer bg-sky-950">
-        {Object.keys(columnHeaders).map((x, i) =>
-          <th key={x} scope="col" id={x}
-              className={`${i === 0 && "rounded-tl"} ${i === x.length + 1 && "rounded-tr"} border-none p-2`}
+        {Object.keys(columnHeaders).map((header, i) =>
+          <th key={header} scope="col" id={header}
+              className={`${i === 0 && "rounded-tl"} ${i === header.length + 1 && "rounded-tr"} border-none p-2`}
               onClick={(event) => {
-                handleOrder(x as keyof IData, event.currentTarget.id, event);
-                setIsKeyClicked(x as keyof IData);
+                handleOrder(header as keyof IData, event.currentTarget.id, event);
+                setIsKeyClicked(header as keyof IData);
               }}>
-            <div className="flex gap-1">{columnHeaders[x as keyof IData]}
+            <div className="flex gap-1">{columnHeaders[header as keyof IData]}
               <div>
                 <ChevronUpIcon
-                  className={`size-4 ${handleIconClasses(x as keyof IData)}`} />
+                  className={`size-4 ${handleIconClasses(header as keyof IData)}`} />
                 <ChevronDownIcon
-                  className={`size-4 ${handleIconDownClass(x as keyof IData)}`} />
+                  className={`size-4 ${handleIconDownClass(header as keyof IData)}`} />
               </div>
             </div>
           </th>)}
       </tr>
       </thead>
       <tbody>
-      {list.map((x, i) => {
+      {list.map((employee, i) => {
           return (
             <tr key={i} className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:font-bold`}>
               <td
-                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{x.firstName}</td>
-              <td className="truncate px-1 py-3 text-center">{x.lastName}</td>
-              <td className="truncate px-1 py-3 text-center">{x.startDate as string}</td>
-              <td className="truncate px-1 py-3 text-center">{x.departments}</td>
-              <td className="truncate px-1 py-3 text-center">{x.birthDate as string}</td>
-              <td className="truncate px-1 py-3 text-center">{x.street}</td>
-              <td className="truncate px-1 py-3 text-center">{x.city}</td>
-              <td className="truncate px-1 py-3 text-center">{x.state}</td>
+                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.departments}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.street}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.city}</td>
+              <td className="truncate px-1 py-3 text-center">{employee.state}</td>
               <td
-                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{x.zipCode}</td>
+                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{employee.zipCode}</td>
             </tr>
           );
         },

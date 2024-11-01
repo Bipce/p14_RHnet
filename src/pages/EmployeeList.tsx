@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/16/solid";
 import { IData } from "../models/form/IData.ts";
 import { getEmployees } from "../service/getPublicData.ts";
-import Table from "../components/EmployeeListPage/Table.tsx";
 import Error from "./Error.tsx";
+import Table from "../components/EmployeeListPage/Table.tsx";
 import SelectEntries from "../components/EmployeeListPage/SelectEntries.tsx";
 import TableSearchBar from "../components/EmployeeListPage/TableSearchBar.tsx";
 import TablePagination from "../components/EmployeeListPage/TablePagination.tsx";
@@ -65,17 +65,19 @@ const EmployeeList = (): JSX.Element => {
   return (
     <>
       <h1 className="mb-5 mt-3 text-4xl font-bold">Current Employee</h1>
-      <div className="flex w-full">
+      <div className="flex w-full justify-between">
         <SelectEntries list={employeesList} setEntries={setSelectedEntries} isOnChange={handleTablePages}
                        setIsFirstTimeRender={setIsFirstTimeRender} />
+        <Link to="/"><HomeIcon className="size-7" /></Link>
         <TableSearchBar register={register("userSearch")} />
       </div>
 
       <Table list={searchValue ? filteredList : selectedEntries} />
 
       <div className="flex w-full items-center justify-between">
+        {/* Move to TablePagination component*/}
         <p>Showing 1 to {selectedEntries.length} of {employeesList.length} entries</p>
-        <Link to="/"><HomeIcon className="size-7" /></Link>
+        {/*----------------------------------*/}
         <div className="flex gap-3">
           <TablePagination pages={pages} />
         </div>

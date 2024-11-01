@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { IData } from "../models/form/IData.ts";
 import InputField from "../components/Form/InputField.tsx";
-import Button from "../components/Button.tsx";
 import SelectField from "../components/Form/SelectField.tsx";
 import DateField from "../components/Form/DateField.tsx";
+import Button from "../components/Button.tsx";
 
 const schema: ZodType<IData> = z.object({
   firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
