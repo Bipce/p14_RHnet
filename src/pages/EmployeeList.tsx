@@ -34,13 +34,13 @@ const EmployeeList = (): JSX.Element => {
 
   // Set the filtered table if write in searchbar
   useEffect(() => {
-    if (searchValue && employeesList) {
-      const filtered = employeesList.filter(employee => Object.values(employee).join(" ").toLowerCase().includes(searchValue.toLowerCase()));
+    if (searchValue && selectedEntries) {
+      const filtered = selectedEntries.filter(employee => Object.values(employee).join(" ").toLowerCase().includes(searchValue.toLowerCase()));
       setFilteredList(filtered);
     } else {
       setFilteredList([]);
     }
-  }, [employeesList, searchValue]);
+  }, [selectedEntries, searchValue]);
 
   // Set pages number at the bottom of the table
   useEffect(() => {
