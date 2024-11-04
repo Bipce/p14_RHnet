@@ -19,7 +19,7 @@ const EmployeeList = (): JSX.Element => {
   const [selectedEntries, setSelectedEntries] = useState<IData[]>();
   const [filteredList, setFilteredList] = useState<IData[]>([]);
   const [isFirstTimeRender, setIsFirstTimeRender] = useState(true);
-  const [currentPage, setCurrentPage] = useState<number>();
+  const [currentPage, setCurrentPage] = useState(1);
   const [pages, setPages] = useState<number[]>();
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
@@ -33,6 +33,7 @@ const EmployeeList = (): JSX.Element => {
   useEffect(() => {
     if (employeesList && isFirstTimeRender) {
       setSelectedEntries(employeesList.slice(0, 10).map(x => x));
+      // console.log(employeesList.slice(10, 20));
     }
   }, [employeesList, isFirstTimeRender]);
 
@@ -45,16 +46,22 @@ const EmployeeList = (): JSX.Element => {
     }
   }, [employeesList, searchValue]);
 
-
   useEffect(() => {
     handleTablePages();
   }, [employeesList, selectedEntries]);
 
   const handleTablePages = (): void => {
     const tablePagination = [];
+    let nbrOfPages: number;
+
     if (employeesList && selectedEntries) {
-      for (let i = 1; i <= employeesList.length / selectedEntries.length; i++) {
+      nbrOfPages = employeesList.length / selectedEntries.length;
+      for (let i = 1; i <= nbrOfPages; i++) {
         tablePagination.push(i);
+      }
+
+      if (nbrOfPages % 2 !== 0) {
+        tablePagination.push(tablePagination.length + 1);
       }
       setPages(tablePagination);
     }
@@ -79,7 +86,7 @@ const EmployeeList = (): JSX.Element => {
         <p>Showing 1 to {selectedEntries.length} of {employeesList.length} entries</p>
         {/*----------------------------------*/}
         <div className="flex gap-3">
-          <TablePagination pages={pages} />
+          <TablePagination pages={pages} setCurrentPage={setCurrentPage} />
         </div>
       </div>
     </>

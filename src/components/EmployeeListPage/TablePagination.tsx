@@ -1,12 +1,12 @@
-import React, { JSX, useState } from "react";
+import React, { JSX } from "react";
 import Error from "../../pages/Error.tsx";
 
 interface IProps {
   pages: number[];
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TablePagination: React.FC<IProps> = ({ pages }): JSX.Element => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+const TablePagination: React.FC<IProps> = ({ pages, setCurrentPage }): JSX.Element => {
 
   const handlePreviousPage = (): void => {
     setCurrentPage(prev => prev === 1 ? 1 : prev - 1);
