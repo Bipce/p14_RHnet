@@ -3,17 +3,21 @@ import { IData } from "../../models/form/IData.ts";
 
 interface IProps {
   list: IData[];
-  setEntries: React.Dispatch<React.SetStateAction<IData[] | undefined>>;
-  setIsFirstTimeRender: React.Dispatch<React.SetStateAction<boolean>>;
+  onSetEntries: React.Dispatch<React.SetStateAction<IData[] | undefined>>;
   isOnChange: () => void;
+  optionsValue: number[];
+  onSetSelectedOption: React.Dispatch<React.SetStateAction<number>>;
+  onResetCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SelectEntries: React.FC<IProps> = ({ list, setEntries, setIsFirstTimeRender, isOnChange }): JSX.Element => {
-  const optionsValue = [10, 25, 50, 100];
+
+const SelectEntries: React.FC<IProps> = (
+  { list, onSetEntries, isOnChange, optionsValue, onSetSelectedOption, onResetCurrentPage }): JSX.Element => {
 
   const handleOnSelectedEntries = (e: React.MouseEvent<HTMLSelectElement, MouseEvent>): void => {
-    setEntries(list.slice(0, parseInt(e.currentTarget.value)).map(x => x));
-    setIsFirstTimeRender(false);
+    onSetEntries(list.slice(0, parseInt(e.currentTarget.value)).map(employee => employee));
+    onSetSelectedOption(parseInt(e.currentTarget.value));
+    onResetCurrentPage(1);
   };
 
   return (
