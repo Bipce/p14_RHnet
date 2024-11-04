@@ -99,9 +99,7 @@ const EmployeeList = (): JSX.Element => {
       <Table list={searchValue ? filteredList : selectedEntries} />
 
       <div className="flex w-full items-center justify-between">
-        {/* Move to TablePagination component*/}
-        <p>Showing 1 to {selectedEntries.length} of {employeesList.length} entries</p>
-        {/*----------------------------------*/}
+        <p>Showing {selectedEntries.length * (currentPage - 1) + 1} to {selectedEntries.length * currentPage} of {employeesList.length} entries</p>
         <div className="flex gap-3">
           <TablePagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </div>
