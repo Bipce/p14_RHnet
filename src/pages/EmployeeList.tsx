@@ -1,10 +1,9 @@
 import React, { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { HomeIcon } from "@heroicons/react/16/solid";
+import { HomeIcon, ArrowPathIcon } from "@heroicons/react/16/solid";
 import { IData } from "../models/form/IData.ts";
 import { getEmployees } from "../service/getPublicData.ts";
-import Error from "./Error.tsx";
 import Table from "../components/EmployeeListPage/Table.tsx";
 import SelectEntries from "../components/EmployeeListPage/SelectEntries.tsx";
 import TableSearchBar from "../components/EmployeeListPage/TableSearchBar.tsx";
@@ -62,13 +61,9 @@ const EmployeeList = (): JSX.Element => {
     let nbrOfPages: number;
 
     if (employeesList && selectedEntries) {
-      nbrOfPages = employeesList.length / selectedEntries.length;
+      nbrOfPages = Math.ceil(employeesList.length / selectedOption);
       for (let i = 1; i <= nbrOfPages; i++) {
         tablePagination.push(i);
-      }
-
-      if (nbrOfPages % 2 !== 0) {
-        tablePagination.push(tablePagination.length + 1);
       }
 
       setPages(tablePagination);
@@ -77,13 +72,13 @@ const EmployeeList = (): JSX.Element => {
 
   const handleTableView = (): void => {
     if (selectedEntries && employeesList) {
-      const startPoint = selectedEntries.length * (currentPage - 1);
-      const endPoint = selectedEntries.length * (currentPage - 1) + selectedOption;
+      const startPoint = selectedOption * (currentPage - 1);
+      const endPoint = Math.min(startPoint + selectedOption, employeesList.length);
       setSelectedEntries(employeesList.slice(startPoint, endPoint));
     }
   };
 
-  if (!employeesList || !selectedEntries || !pages) return <Error />;
+  if (!employeesList || !selectedEntries || !pages) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
 
   return (
     <>
