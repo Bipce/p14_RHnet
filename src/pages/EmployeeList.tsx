@@ -2,19 +2,19 @@ import React, { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { HomeIcon, ArrowPathIcon } from "@heroicons/react/16/solid";
+import { useGetEmployeeListQuery } from "../features/apiSlice.ts";
 import { IData } from "../models/form/IData.ts";
-import { getEmployees } from "../service/getPublicData.ts";
 import Table from "../components/EmployeeListPage/Table.tsx";
 import SelectEntries from "../components/EmployeeListPage/SelectEntries.tsx";
 import TableSearchBar from "../components/EmployeeListPage/TableSearchBar.tsx";
 import TablePagination from "../components/EmployeeListPage/TablePagination.tsx";
+import Error from "./Error.tsx";
 
 type FormValues = {
   userSearch: string
 }
 
 const EmployeeList = (): JSX.Element => {
-  const [employeesList, setEmployeesList] = useState<IData[]>(); // Provided by store when in place
   const [selectedEntries, setSelectedEntries] = useState<IData[]>();
   const [filteredList, setFilteredList] = useState<IData[]>([]);
   const [selectedOption, setSelectedOption] = useState(10);
@@ -24,12 +24,7 @@ const EmployeeList = (): JSX.Element => {
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
   const [render, setRender] = useState(false);
-
-  useEffect(() => {
-    (async (): Promise<void> => {
-      setEmployeesList(await getEmployees());
-    })();
-  }, [currentPage]);
+  const { data: employeesList, isLoading } = useGetEmployeeListQuery();
 
   // Set the filtered table if write in searchbar
   useEffect(() => {
@@ -78,7 +73,8 @@ const EmployeeList = (): JSX.Element => {
     }
   };
 
-  if (!employeesList || !selectedEntries || !pages) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
+  if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
+  if (!employeesList || !selectedEntries || !pages) return <Error />;
 
   return (
     <>
@@ -94,10 +90,8 @@ const EmployeeList = (): JSX.Element => {
       <Table list={searchValue ? filteredList : selectedEntries} />
 
       <div className="flex w-full items-center justify-between">
-        <p>Showing {selectedEntries.length * (currentPage - 1) + 1} to {selectedEntries.length * currentPage} of {employeesList.length} entries</p>
-        <div className="flex gap-3">
-          <TablePagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
-        </div>
+        <TablePagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} list={employeesList}
+                         selectedOption={selectedOption} />
       </div>
     </>
   );

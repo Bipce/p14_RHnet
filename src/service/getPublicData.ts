@@ -12,8 +12,3 @@ export const getWorkDepartments = async (): Promise<IWorkDepartment[]> => {
   const res = await axios.get<IWorkDepartment[]>("/data/workDepartments.json");
   return res.data;
 };
-
-export const getEmployees = async (): Promise<IData[]> => {
-  const res = await axios.get<IData[]>("/data/employees.json");
-  return res.data;
-};
