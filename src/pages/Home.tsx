@@ -9,6 +9,8 @@ import InputField from "../components/Form/InputField.tsx";
 import SelectField from "../components/Form/SelectField.tsx";
 import DateField from "../components/Form/DateField.tsx";
 import Button from "../components/Button.tsx";
+import { useAppDispatch } from "../app/store.ts";
+import { setEmployee } from "../features/employeeSlice.ts";
 
 const schema: ZodType<IData> = z.object({
   firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
@@ -33,12 +35,13 @@ const Home = (): JSX.Element => {
   } = useForm<IData>({ resolver: zodResolver(schema) });
   const birthDate = watch("birthDate");
   const startDate = watch("startDate");
+  const dispatch = useAppDispatch();
 
   const onSubmit = (data: IData): void => {
     try {
-      console.log(data, "GOOD");
+      dispatch(setEmployee(data));
     } catch (err) {
-      console.log(err, "not good");
+      console.log(err);
     }
   };
 
