@@ -42,24 +42,24 @@ const EmployeeList = (): JSX.Element => {
   // Set pages number at the bottom of the table
   useEffect(() => {
     handleTablePages();
-  }, [employees, selectedEntries]);
+  }, [employeesList, selectedEntries]);
 
   useEffect(() => {
-    if (employees && !render) {
-      setSelectedEntries(employees.slice(0, 10).map(employee => employee));
+    if (employeesList && !render) {
+      setSelectedEntries(employeesList.slice(0, 10).map(employee => employee));
       setRender(true);
     }
     if (selectedEntries) {
       handleTableView();
     }
-  }, [currentPage, employees]);
+  }, [currentPage, employeesList]);
 
   const handleTablePages = (): void => {
     const tablePagination = [];
     let nbrOfPages: number;
 
-    if (employees && selectedEntries) {
-      nbrOfPages = Math.ceil(employees.length / selectedOption);
+    if (employeesList && selectedEntries) {
+      nbrOfPages = Math.ceil(employeesList.length / selectedOption);
       for (let i = 1; i <= nbrOfPages; i++) {
         tablePagination.push(i);
       }
@@ -69,21 +69,21 @@ const EmployeeList = (): JSX.Element => {
   };
 
   const handleTableView = (): void => {
-    if (selectedEntries && employees) {
+    if (selectedEntries && employeesList) {
       const startPoint = selectedOption * (currentPage - 1);
-      const endPoint = Math.min(startPoint + selectedOption, employees.length);
-      setSelectedEntries(employees.slice(startPoint, endPoint));
+      const endPoint = Math.min(startPoint + selectedOption, employeesList.length);
+      setSelectedEntries(employeesList.slice(startPoint, endPoint));
     }
   };
 
   if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
-  if (!employees || !selectedEntries || !pages) return <Error />;
+  if (!employeesList || !selectedEntries || !pages) return <Error />;
 
   return (
     <>
       <h1 className="mb-5 mt-3 text-4xl font-bold">Current Employee</h1>
       <div className="flex w-full justify-between">
-        <SelectEntries list={employees} onSetEntries={setSelectedEntries}
+        <SelectEntries list={employeesList} onSetEntries={setSelectedEntries}
                        isOnChange={handleTablePages} optionsValue={optionsValue}
                        onSetSelectedOption={setSelectedOption} onResetCurrentPage={setCurrentPage} />
         <Link to="/"><HomeIcon className="size-7" /></Link>
@@ -93,7 +93,7 @@ const EmployeeList = (): JSX.Element => {
       <Table list={searchValue ? filteredList : selectedEntries} />
 
       <div className="flex w-full items-center justify-between">
-        <TablePagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} list={employees}
+        <TablePagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} list={employeesList}
                          selectedOption={selectedOption} />
       </div>
     </>

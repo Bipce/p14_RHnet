@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IData } from "../models/form/IData.ts";
-import { RootState, store } from "../app/store.ts";
+import { RootState } from "../app/store.ts";
 
 interface IEmployeeState {
   employees: IData[];
@@ -16,7 +16,6 @@ export const employeeSlice = createSlice({
   reducers: {
     setEmployee(state, action: PayloadAction<IData>) {
       state.employees.push(action.payload);
-      localStorage.setItem("employees", JSON.stringify(state.employees));
     },
   },
 });
