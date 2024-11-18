@@ -7,10 +7,10 @@ export const employeeApi = createApi({
     baseUrl: "/data",
   }),
   endpoints: (builder) => ({
-    getEmployeeList: builder.query<IData[], void>({
+    getEmployees: builder.query<IData[], void>({
       query: () => "employees.json",
     }),
   }),
 });
 
-export const { useGetEmployeeListQuery } = employeeApi;
+export const { useGetEmployeesQuery } = employeeApi;

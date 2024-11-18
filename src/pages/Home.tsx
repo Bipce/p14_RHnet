@@ -21,8 +21,8 @@ const schema: ZodType<IData> = z.object({
   state: z.string().min(2, { message: "Should be at least 2 characters" }),
   zipCode: z.string().min(5, { message: "Should be exactly 5 digits" }).transform(nbr => parseInt(nbr)),
   departments: z.string().min(1),
-  birthDate: z.date({ message: "Birth date is required" }).transform(date => format(date, "MM-dd-yyyy")),
-  startDate: z.date({ message: "Start date is required" }).transform(date => format(date, "MM-dd-yyyy")),
+  birthDate: z.date({ message: "Birth date is required" }).transform(date => format(date, "MM/dd/yyyy")),
+  startDate: z.date({ message: "Start date is required" }).transform(date => format(date, "MM/dd/yyyy")),
 });
 
 const Home = (): JSX.Element => {
