@@ -8,7 +8,7 @@ export const employeeApi = createApi({
   }),
   endpoints: (builder) => ({
     getEmployees: builder.query<IData[], void>({
-      query: () => "employees.json",
+      query: () => "mockEmployees.json",
     }),
   }),
 });

@@ -20,19 +20,19 @@ const EmployeeList = (): JSX.Element => {
   const [selectedEntries, setSelectedEntries] = useState<IData[]>();
   const [filteredList, setFilteredList] = useState<IData[]>([]);
   const [selectedOption, setSelectedOption] = useState(10);
-  const optionsValue = [10, 25, 50, 100];
   const [currentPage, setCurrentPage] = useState(1);
   const [pages, setPages] = useState<number[]>();
+  const [render, setRender] = useState(false);
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
-  const [render, setRender] = useState(false);
   const { isLoading } = useGetEmployeesQuery();
+  const optionsValue = [10, 25, 50, 100];
 
   // Data from JSON file
-  // const { data: employees } = useGetEmployeesQuery();
+  const { data: employees } = useGetEmployeesQuery();
 
   // Data from store
-  const { employees } = useAppSelector(selectEmployee);
+  // const { employees } = useAppSelector(selectEmployee);
 
   // Set the filtered table if write in searchbar
   useEffect(() => {
@@ -47,8 +47,10 @@ const EmployeeList = (): JSX.Element => {
   // Set pages number at the bottom of the table
   useEffect(() => {
     handleTablePages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employees, selectedEntries]);
 
+  // Set entries at 10 when first render
   useEffect(() => {
     if (employees && !render) {
       setSelectedEntries(employees.slice(0, 10).map(employee => employee));
@@ -57,6 +59,7 @@ const EmployeeList = (): JSX.Element => {
     if (selectedEntries) {
       handleTableView();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, employees]);
 
   const handleTablePages = (): void => {
@@ -91,7 +94,7 @@ const EmployeeList = (): JSX.Element => {
         <SelectEntries list={employees} onSetEntries={setSelectedEntries}
                        isOnChange={handleTablePages} optionsValue={optionsValue}
                        onSetSelectedOption={setSelectedOption} onResetCurrentPage={setCurrentPage} />
-        <Link to="/"><HomeIcon className="size-7" /></Link>
+        <Link to="/" aria-label="Home icon"><HomeIcon className="size-7" /></Link>
         <TableSearchBar register={register("userSearch")} />
       </div>
 

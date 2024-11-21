@@ -186,10 +186,10 @@
     "@babel/helper-validator-identifier" "^7.25.7"
     to-fast-properties "^2.0.0"
 
-"@bipce/hrnet_modal_package@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@bipce/hrnet_modal_package/-/hrnet_modal_package-0.0.8.tgz#b158d4ec543c6a355e72fe946140b1803a089d53"
-  integrity sha512-XZ/SjT3DhdqcYKEMuknzVsKc1e3oRNAawE6fijjGTxyackSYdUT4QVrrxSSzAutpvC1meD1+DEEaP8vg+ridsw==
+"@bipce/hrnet_modal_package@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@bipce/hrnet_modal_package/-/hrnet_modal_package-0.0.9.tgz#1f8d5b968f8ec168aa1cf4df158539f1f2a32a29"
+  integrity sha512-Kk5diiqXJWNukq2G1h9WeDx8pVqEErZ8hltqZWTSKKeREFq8bu+CP4bRP8lwrxBxjfjIQiK0XO1QzuJYgM/JiA==
   dependencies:
     "@heroicons/react" "^2.1.5"
     heroicons "^2.1.5"

@@ -21,7 +21,7 @@ const DateField: React.FC<IProps> = (
   return (
     <FieldWrapper htmlFor={htmlFor} label={label}>
       <DatePicker selected={watch(stringValue)} onChange={setValue} dateFormat="MM/dd/yyyy"
-                  className={errorMsg ? "datepicker-error" : ""} />
+                  className={errorMsg ? "datepicker-error" : ""} ariaLabelledBy={label} />
       {isError && <span className="px-1 text-sm text-red-200">{errorMsg}</span>}
     </FieldWrapper>
   );

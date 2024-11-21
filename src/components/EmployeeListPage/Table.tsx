@@ -81,10 +81,6 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     return isOrdered[clickedKey] && "text-sky-500";
   };
 
-  //
-  // -----------------------------------------Add id to interface IData-------------------------------------------------
-  //
-
   return (
     <table className="w-full border-separate border-spacing-0 rounded border border-slate-500">
       <caption className="hidden">Employee list</caption>

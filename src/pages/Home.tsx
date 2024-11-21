@@ -67,49 +67,59 @@ const Home = (): JSX.Element => {
 
   return (
     <>
-      <div className={`flex w-full flex-col items-center gap-5 ${isModalOpen && "opacity-50"}`}>
-        <h1 className="mt-3 text-4xl font-bold">HRnet</h1>
-        <Link to="/employee-list" className="hover:text-sky-300 hover:underline active:text-sky-400">View Current
-          Employees</Link>
+      <div className={`flex w-full flex-col items-center gap-5 md:gap-7
+                      ${isModalOpen && "opacity-50"}`}>
+        <div className="text-center">
+          <h1 className="mb-5 mt-3 text-4xl font-bold">HRnet</h1>
+          <Link to="/employee-list" className="hover:text-sky-300 hover:underline active:text-sky-400">View
+            Current
+            Employees</Link>
+          <h3 className="mb-1 mt-6 text-2xl font-bold">Create Employee</h3>
+        </div>
 
-        <h3 className="mb-1 mt-6 text-2xl font-bold">Create Employee</h3>
+        <form onSubmit={handleSubmit(onSubmit)} id="create-employee" className="flex flex-col md:mt-20">
+          <div
+            className="md:mb-7 md:flex md:items-center md:gap-7 md:rounded md:border md:border-sky-900 md:bg-sky-800 md:px-8 md:py-3 md:shadow">
+            <div>
+              <InputField htmlFor="first-name" label="First Name" type="text" id="first-name"
+                          register={register("firstName")} isError={errors} errorMsg={errors.firstName?.message} />
+              <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"
+                          register={register("lastName")} isError={errors} errorMsg={errors.lastName?.message} />
+              <DateField htmlFor="date-of-birth" label="Date of Birth" stringValue="birthDate"
+                         watch={() => birthDate as Date}
+                         setValue={date => handleDateChange(date, "birthDate")} isError={errors}
+                         errorMsg={errors.birthDate?.message} />
+              <DateField htmlFor="start-date" label="Start Date" stringValue="startDate" watch={() => startDate as Date}
+                         setValue={date => handleDateChange(date, "startDate")} isError={errors}
+                         errorMsg={errors.startDate?.message} />
+            </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} id="create-employee" className="flex flex-col">
+            <div>
+              <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">
+                <legend>Address</legend>
 
-          <InputField htmlFor="first-name" label="First Name" type="text" id="first-name"
-                      register={register("firstName")} isError={errors} errorMsg={errors.firstName?.message} />
-          <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"
-                      register={register("lastName")} isError={errors} errorMsg={errors.lastName?.message} />
-          <DateField htmlFor="date-of-birth" label="Date of Birth" stringValue="birthDate"
-                     watch={() => birthDate as Date}
-                     setValue={date => handleDateChange(date, "birthDate")} isError={errors}
-                     errorMsg={errors.birthDate?.message} />
-          <DateField htmlFor="start-date" label="Start Date" stringValue="startDate" watch={() => startDate as Date}
-                     setValue={date => handleDateChange(date, "startDate")} isError={errors}
-                     errorMsg={errors.startDate?.message} />
+                <InputField htmlFor="street" label="Street" type="text" id="street"
+                            register={register("street")} isError={errors} errorMsg={errors.street?.message} />
+                <InputField htmlFor="city" label="City" type="text" id="city"
+                            register={register("city")} isError={errors} errorMsg={errors.city?.message} />
+                <SelectField htmlFor="state" label="State" id="state" register={register("state")} />
+                <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode" isError={errors}
+                            register={register("zipCode")} errorMsg={errors.zipCode?.message} />
+                <SelectField htmlFor="departments" label="Departments" id="departments"
+                             register={register("departments")} />
+              </fieldset>
+            </div>
+          </div>
 
-          <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">
-            <legend>Address</legend>
-
-            <InputField htmlFor="street" label="Street" type="text" id="street"
-                        register={register("street")} isError={errors} errorMsg={errors.street?.message} />
-            <InputField htmlFor="city" label="City" type="text" id="city"
-                        register={register("city")} isError={errors} errorMsg={errors.city?.message} />
-            <SelectField htmlFor="state" label="State" id="state" register={register("state")} />
-            <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode" isError={errors}
-                        register={register("zipCode")} errorMsg={errors.zipCode?.message} />
-            <SelectField htmlFor="departments" label="Departments" id="departments"
-                         register={register("departments")} />
-          </fieldset>
           <Button />
         </form>
       </div>
       {isModalOpen && (
-        <Modal isOpen={isModalOpen} message={"Employee is created !"} iconClassName="size-5"
-               sectionClassName="absolute top-1/2 w-1/2 rounded border border-sky-50 bg-sky-900 p-5 text-center text-lg
-                               shadow-lg shadow-slate-950"
-               btnClassName="absolute -right-2 -top-3.5 flex items-center rounded-2xl border border-sky-50 bg-red-800 p-1
-                           text-sm hover:border-slate-200 hover:bg-red-800" onHandleClick={handleCloseModal} />
+        <Modal message={"Employee is created !"} iconClassName="size-5" onHandleClick={handleCloseModal}
+               sectionClassName="absolute top-1/2 w-1/3 rounded border border-sky-50 bg-sky-900 p-5 text-center text-lg
+                                 shadow-lg shadow-slate-950 min-w-44 max-w-96"
+               btnClassName="absolute -right-2 -top-3.5 flex items-center rounded-2xl border border-sky-50 bg-sky-950 p-1
+                             text-sm hover:border-slate-200 hover:bg-sky-800" />
       )}
     </>
   );
