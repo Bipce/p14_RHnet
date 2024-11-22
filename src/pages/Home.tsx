@@ -14,7 +14,8 @@ import DateField from "../components/Form/DateField.tsx";
 import Button from "../components/Button.tsx";
 import { useAppDispatch } from "../app/store.ts";
 import { getPublicData, getWorkDepartments } from "../service/getPublicData.ts";
-import { setEmployee } from "../features/employeeSlice.ts";
+import { addEmployee } from "../features/employeeSlice.ts";
+import { useUpdateEmployees } from "../hooks/useUpdateEmployees.ts";
 
 const schema: ZodType<IData> = z.object({
   firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
@@ -44,6 +45,7 @@ const Home = (): JSX.Element | null => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [states, setStates] = useState<IState[]>();
   const [workDepartments, setWorkDepartments] = useState<IWorkDepartment[]>();
+  useUpdateEmployees();
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -58,7 +60,7 @@ const Home = (): JSX.Element | null => {
 
   const onSubmit = async (data: IData): Promise<void> => {
     try {
-      dispatch(setEmployee(data));
+      dispatch(addEmployee(data));
       setIsModalOpen(true);
       reset({
         firstName: "",

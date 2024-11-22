@@ -2,7 +2,6 @@ import React, { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { HomeIcon, ArrowPathIcon } from "@heroicons/react/16/solid";
-import { useGetEmployeesQuery } from "../features/apiSlice.ts";
 import { IData } from "../models/form/IData.ts";
 import Table from "../components/EmployeeListPage/Table.tsx";
 import SelectEntries from "../components/EmployeeListPage/SelectEntries.tsx";
@@ -11,6 +10,7 @@ import TablePagination from "../components/EmployeeListPage/TablePagination.tsx"
 import Error from "./Error.tsx";
 import { useAppSelector } from "../app/store.ts";
 import { selectEmployee } from "../features/employeeSlice.ts";
+import { useUpdateEmployees } from "../hooks/useUpdateEmployees.ts";
 
 type FormValues = {
   userSearch: string
@@ -25,14 +25,10 @@ const EmployeeList = (): JSX.Element => {
   const [render, setRender] = useState(false);
   const { register, watch } = useForm<FormValues>();
   const searchValue = watch("userSearch");
-  const { isLoading } = useGetEmployeesQuery();
   const optionsValue = [10, 25, 50, 100];
+  const { employees } = useAppSelector(selectEmployee);
 
-  // Data from JSON file
-  const { data: employees } = useGetEmployeesQuery();
-
-  // Data from store
-  // const { employees } = useAppSelector(selectEmployee);
+  useUpdateEmployees();
 
   // Set the filtered table if write in searchbar
   useEffect(() => {
@@ -84,7 +80,7 @@ const EmployeeList = (): JSX.Element => {
     }
   };
 
-  if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
+  // if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
   if (!employees || !selectedEntries || !pages) return <Error />;
 
   return (
