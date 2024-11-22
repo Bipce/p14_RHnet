@@ -74,45 +74,45 @@ const Home = (): JSX.Element => {
           <Link to="/employee-list" className="hover:text-sky-300 hover:underline active:text-sky-400">View
             Current
             Employees</Link>
-          <h3 className="mb-1 mt-6 text-2xl font-bold">Create Employee</h3>
+          <h2 className="mb-1 mt-6 text-2xl font-bold">Create Employee</h2>
         </div>
 
-        {/*<form onSubmit={handleSubmit(onSubmit)} id="create-employee" className="flex flex-col md:mt-20">*/}
-        {/*  <div*/}
-        {/*    className="md:mb-7 md:flex md:items-center md:gap-7 md:rounded md:border md:border-sky-900 md:bg-sky-800 md:px-8 md:py-3 md:shadow">*/}
-        {/*    <div>*/}
-        {/*      <InputField htmlFor="first-name" label="First Name" type="text" id="first-name"*/}
-        {/*                  register={register("firstName")} isError={errors} errorMsg={errors.firstName?.message} />*/}
-        {/*      <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"*/}
-        {/*                  register={register("lastName")} isError={errors} errorMsg={errors.lastName?.message} />*/}
-        {/*      <DateField htmlFor="date-of-birth" label="Date of Birth" stringValue="birthDate"*/}
-        {/*                 watch={() => birthDate as Date}*/}
-        {/*                 setValue={date => handleDateChange(date, "birthDate")} isError={errors}*/}
-        {/*                 errorMsg={errors.birthDate?.message} />*/}
-        {/*      <DateField htmlFor="start-date" label="Start Date" stringValue="startDate" watch={() => startDate as Date}*/}
-        {/*                 setValue={date => handleDateChange(date, "startDate")} isError={errors}*/}
-        {/*                 errorMsg={errors.startDate?.message} />*/}
-        {/*    </div>*/}
+        <form onSubmit={handleSubmit(onSubmit)} id="create-employee" className="flex flex-col md:mt-20">
+          <div
+            className="md:mb-7 md:flex md:items-center md:gap-7 md:rounded md:border md:border-sky-900 md:bg-sky-800 md:px-8 md:py-3 md:shadow">
+            <div>
+              <InputField htmlFor="first-name" label="First Name" type="text" id="first-name"
+                          register={register("firstName")} isError={errors} errorMsg={errors.firstName?.message} />
+              <InputField htmlFor="last-name" label="Last Name" type="text" id="last-name"
+                          register={register("lastName")} isError={errors} errorMsg={errors.lastName?.message} />
+              <DateField htmlFor="date-of-birth" label="Date of Birth" stringValue="birthDate"
+                         watch={() => birthDate as Date}
+                         setValue={date => handleDateChange(date, "birthDate")} isError={errors}
+                         errorMsg={errors.birthDate?.message} />
+              <DateField htmlFor="start-date" label="Start Date" stringValue="startDate" watch={() => startDate as Date}
+                         setValue={date => handleDateChange(date, "startDate")} isError={errors}
+                         errorMsg={errors.startDate?.message} />
+            </div>
 
-        {/*    <div>*/}
-        {/*      <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">*/}
-        {/*        <legend>Address</legend>*/}
+            <div>
+              <fieldset className="rounded border-2 border-slate-200/50 px-6 py-2">
+                <legend>Address</legend>
 
-        {/*        <InputField htmlFor="street" label="Street" type="text" id="street"*/}
-        {/*                    register={register("street")} isError={errors} errorMsg={errors.street?.message} />*/}
-        {/*        <InputField htmlFor="city" label="City" type="text" id="city"*/}
-        {/*                    register={register("city")} isError={errors} errorMsg={errors.city?.message} />*/}
-        {/*        <SelectField htmlFor="state" label="State" id="state" register={register("state")} />*/}
-        {/*        <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode" isError={errors}*/}
-        {/*                    register={register("zipCode")} errorMsg={errors.zipCode?.message} />*/}
-        {/*        <SelectField htmlFor="departments" label="Departments" id="departments"*/}
-        {/*                     register={register("departments")} />*/}
-        {/*      </fieldset>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
+                <InputField htmlFor="street" label="Street" type="text" id="street"
+                            register={register("street")} isError={errors} errorMsg={errors.street?.message} />
+                <InputField htmlFor="city" label="City" type="text" id="city"
+                            register={register("city")} isError={errors} errorMsg={errors.city?.message} />
+                <SelectField htmlFor="state" label="State" id="state" register={register("state")} />
+                <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode" isError={errors}
+                            register={register("zipCode")} errorMsg={errors.zipCode?.message} />
+                <SelectField htmlFor="departments" label="Departments" id="departments"
+                             register={register("departments")} />
+              </fieldset>
+            </div>
+          </div>
 
-        {/*  <Button />*/}
-        {/*</form>*/}
+          <Button />
+        </form>
       </div>
       {isModalOpen && (
         <Modal message={"Employee is created !"} iconClassName="size-5" onHandleClick={handleCloseModal}

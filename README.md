@@ -18,7 +18,7 @@ For that we needed to :
 
     $ yarn
 
-## Lunch front
+## Launch front
 
     $ yarn dev
 
