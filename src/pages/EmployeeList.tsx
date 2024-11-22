@@ -84,7 +84,7 @@ const EmployeeList = (): JSX.Element => {
   if (!employees || !selectedEntries || !pages) return <Error />;
 
   return (
-    <div className="h-screen w-full overflow-hidden text-center">
+    <div className="size-full text-center">
       <h1 className="mt-3 text-2xl font-bold md:mb-5 md:text-4xl">Current Employee</h1>
       <div className="mb-3 flex w-full flex-col gap-2 md:flex-row md:justify-between">
         <SelectEntries list={employees} onSetEntries={setSelectedEntries}
