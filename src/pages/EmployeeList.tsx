@@ -27,8 +27,7 @@ const EmployeeList = (): JSX.Element => {
   const searchValue = watch("userSearch");
   const optionsValue = [10, 25, 50, 100];
   const { employees } = useAppSelector(selectEmployee);
-
-  useUpdateEmployees();
+  const isLoading = useUpdateEmployees();
 
   // Set the filtered table if write in searchbar
   useEffect(() => {
@@ -80,7 +79,7 @@ const EmployeeList = (): JSX.Element => {
     }
   };
 
-  // if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
+  if (isLoading) return <ArrowPathIcon className="my-auto size-1/2 animate-spin" />;
   if (!employees || !selectedEntries || !pages) return <Error />;
 
   return (
