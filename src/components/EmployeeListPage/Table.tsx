@@ -82,50 +82,52 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
   };
 
   return (
-    <table className="w-full border-separate border-spacing-0 rounded border border-slate-500">
-      <caption className="hidden">Employee list</caption>
-      <thead className="text-lg">
-      <tr className="cursor-pointer bg-sky-950">
-        {Object.keys(columnHeaders).map((header, i) =>
-          <th key={header} scope="col" id={header}
-              className={`${i === 0 && "rounded-tl"} ${i === header.length + 1 && "rounded-tr"} border-none p-2`}
-              onClick={(event) => {
-                handleOrder(header as keyof IData, event.currentTarget.id, event);
-                setIsKeyClicked(header as keyof IData);
-              }}>
-            <div className="flex gap-1">{columnHeaders[header as keyof IData]}
-              <div>
-                <ChevronUpIcon
-                  className={`size-4 ${handleIconClasses(header as keyof IData)}`} />
-                <ChevronDownIcon
-                  className={`size-4 ${handleIconDownClass(header as keyof IData)}`} />
+    <div className="mb-3 w-full min-w-[300px] overflow-y-auto">
+      <table className="w-full table-auto border-separate border-spacing-0 rounded border border-slate-500">
+        <caption className="hidden">Employee list</caption>
+        <thead className="md:text-lg">
+        <tr className="cursor-pointer bg-sky-950">
+          {Object.keys(columnHeaders).map((header, i) =>
+            <th key={header} scope="col" id={header}
+                className={`${i === 0 && "rounded-tl"} ${i === header.length + 1 && "rounded-tr"} place-items-center border-none p-2`}
+                onClick={(event) => {
+                  handleOrder(header as keyof IData, event.currentTarget.id, event);
+                  setIsKeyClicked(header as keyof IData);
+                }}>
+              <div className="flex gap-1">{columnHeaders[header as keyof IData]}
+                <div>
+                  <ChevronUpIcon
+                    className={`size-4 ${handleIconClasses(header as keyof IData)}`} />
+                  <ChevronDownIcon
+                    className={`size-4 ${handleIconDownClass(header as keyof IData)}`} />
+                </div>
               </div>
-            </div>
-          </th>)}
-      </tr>
-      </thead>
-      <tbody>
-      {list.map((employee, i) => {
-          return (
-            <tr key={i}
-                className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:bg-sky-800`}>
-              <td
-                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.departments}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.street}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.city}</td>
-              <td className="truncate px-1 py-3 text-center">{employee.state}</td>
-              <td
-                className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{employee.zipCode}</td>
-            </tr>
-          );
-        },
-      )}
-      </tbody>
-    </table>
+            </th>)}
+        </tr>
+        </thead>
+        <tbody>
+        {list.map((employee, i) => {
+            return (
+              <tr key={i}
+                  className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:bg-sky-800`}>
+                <td
+                  className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.departments}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.street}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.city}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.state}</td>
+                <td
+                  className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{employee.zipCode}</td>
+              </tr>
+            );
+          },
+        )}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

@@ -32,7 +32,7 @@ const TablePagination: React.FC<IProps> = ({ pages, setCurrentPage, currentPage,
       <p>Showing {(currentPage - 1) * selectedOption + 1} to {Math.min(currentPage * selectedOption, list.length)} of {list.length} entries</p>
       <div className="flex gap-3">
 
-        <button onClick={handlePreviousPage}>Previous</button>
+        <button onClick={handlePreviousPage} className="">Previous</button>
         {pages.map(pageNbr =>
           <button onClick={() => handleCurrentPage(pageNbr)} key={pageNbr}
                   className={`rounded border border-sky-700 px-3 py-1 hover:bg-sky-900 active:border-sky-600 

@@ -21,7 +21,7 @@ const SelectEntries: React.FC<IProps> = (
   };
 
   return (
-    <div className="flex gap-0.5">
+    <div className="mt-5 flex justify-center gap-1 md:mt-0">
       <label htmlFor="entries" className="invisible" />
       <span>Show</span>
       <select defaultValue={10} onChange={isOnChange}
