@@ -1,4 +1,4 @@
-import React, { JSX, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,11 +6,14 @@ import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { Modal } from "@bipce/hrnet_modal_package";
 import { IData } from "../models/form/IData.ts";
+import { IWorkDepartment } from "../models/form/publicData/IWorkDepartment.ts";
+import { IState } from "../models/form/publicData/IState.ts";
 import InputField from "../components/Form/InputField.tsx";
 import SelectField from "../components/Form/SelectField.tsx";
 import DateField from "../components/Form/DateField.tsx";
 import Button from "../components/Button.tsx";
 import { useAppDispatch } from "../app/store.ts";
+import { getPublicData, getWorkDepartments } from "../service/getPublicData.ts";
 import { setEmployee } from "../features/employeeSlice.ts";
 
 const schema: ZodType<IData> = z.object({
@@ -25,7 +28,7 @@ const schema: ZodType<IData> = z.object({
   startDate: z.date({ message: "Start date is required" }).transform(date => format(date, "MM/dd/yyyy")),
 });
 
-const Home = (): JSX.Element => {
+const Home = (): JSX.Element | null => {
   const {
     register,
     handleSubmit,
@@ -39,8 +42,21 @@ const Home = (): JSX.Element => {
   const startDate = watch("startDate");
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [states, setStates] = useState<IState[]>();
+  const [workDepartments, setWorkDepartments] = useState<IWorkDepartment[]>();
 
-  const onSubmit = (data: IData): void => {
+  useEffect(() => {
+    (async (): Promise<void> => {
+      try {
+        setStates(await getPublicData());
+        setWorkDepartments(await getWorkDepartments());
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
+
+  const onSubmit = async (data: IData): Promise<void> => {
     try {
       dispatch(setEmployee(data));
       setIsModalOpen(true);
@@ -64,6 +80,8 @@ const Home = (): JSX.Element => {
   const handleCloseModal = (): void => {
     setIsModalOpen(prev => !prev);
   };
+
+  if (!states || !workDepartments) return null;
 
   return (
     <>
@@ -102,11 +120,13 @@ const Home = (): JSX.Element => {
                             register={register("street")} isError={errors} errorMsg={errors.street?.message} />
                 <InputField htmlFor="city" label="City" type="text" id="city"
                             register={register("city")} isError={errors} errorMsg={errors.city?.message} />
-                <SelectField htmlFor="state" label="State" id="state" register={register("state")} />
+                <SelectField htmlFor="state" label="State" id="state" register={register("state")}
+                             data={states.map(state => state.name)} />
                 <InputField htmlFor="zipCode" label="Zip Code" type="number" id="zipCode" isError={errors}
                             register={register("zipCode")} errorMsg={errors.zipCode?.message} />
                 <SelectField htmlFor="departments" label="Departments" id="departments"
-                             register={register("departments")} />
+                             register={register("departments")}
+                             data={workDepartments.map(workDepartment => workDepartment.name)} />
               </fieldset>
             </div>
           </div>

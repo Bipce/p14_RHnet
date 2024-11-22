@@ -1,12 +1,9 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { IData } from "./IData.ts";
 
-export interface IFieldData {
-  isError?: FieldErrors<IData>,
-  errorMsg?: string | undefined,
+export interface IFieldBase {
   label: string,
   htmlFor: string,
-  type?: string,
   id: string,
   register: ReturnType<UseFormRegister<IData>>,
 }

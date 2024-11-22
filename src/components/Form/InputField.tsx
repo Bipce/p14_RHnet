@@ -1,8 +1,16 @@
 import React, { JSX } from "react";
-import { IFieldData } from "../../models/form/IFieldData.ts";
+import { IFieldBase } from "../../models/form/IFieldData.ts";
+import { FieldErrors } from "react-hook-form";
+import { IData } from "../../models/form/IData.ts";
 import FieldWrapper from "./FieldWrapper.tsx";
 
-const InputField: React.FC<IFieldData> = ({ id, type, register, htmlFor, label, isError, errorMsg }): JSX.Element => {
+interface IInputData extends IFieldBase {
+  type?: string,
+  isError?: FieldErrors<IData>,
+  errorMsg?: string | undefined,
+}
+
+const InputField: React.FC<IInputData> = ({ id, type, register, htmlFor, label, isError, errorMsg }): JSX.Element => {
 
   return (
     <FieldWrapper htmlFor={htmlFor} label={label}>
