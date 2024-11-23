@@ -12,7 +12,7 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     firstName: false,
     lastName: false,
     startDate: false,
-    departments: false,
+    department: false,
     birthDate: false,
     street: false,
     city: false,
@@ -24,7 +24,7 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     firstName: "First Name",
     lastName: "Last Name",
     startDate: "Start Date",
-    departments: "Departments",
+    department: "Department",
     birthDate: "Date of Birth",
     street: "Street",
     city: "City",
@@ -114,7 +114,7 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
                   className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
                 <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
                 <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.departments}</td>
+                <td className="truncate px-1 py-3 text-center">{employee.department}</td>
                 <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
                 <td className="truncate px-1 py-3 text-center">{employee.street}</td>
                 <td className="truncate px-1 py-3 text-center">{employee.city}</td>

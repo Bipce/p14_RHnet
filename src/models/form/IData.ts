@@ -7,5 +7,5 @@ export interface IData {
   city: string,
   state: string,
   zipCode: string | number,
-  departments: string,
+  department: string,
 }

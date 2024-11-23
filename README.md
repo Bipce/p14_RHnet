@@ -25,9 +25,10 @@ For that we needed to :
 ## Build project
 
     $ yarn build
-    $ yarn add -g http-server
-    $ yarn add serve --dev
-    $ serve -s dist
+
+## Serve the dist folder
+
+    $ yarn preview
 
 ## Prerequisites
 
