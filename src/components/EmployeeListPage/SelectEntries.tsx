@@ -27,7 +27,7 @@ const SelectEntries: React.FC<IProps> = (
       <select defaultValue={10} onChange={isOnChange}
               className="rounded border-2 border-slate-600 bg-slate-900 px-1 text-slate-100 outline-none focus:border-sky-400"
               id="entries" onClick={handleOnSelectedEntries}>
-        {optionsValue.map(option => <option key={option} value={option}>{option}</option>)}
+        {optionsValue.map(option => <option key={option} value={option} label={option.toString()}>{option}</option>)}
       </select>
       <span>entries</span>
     </div>
