@@ -36,13 +36,17 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
     const event = e.currentTarget;
     const propertyType = property as keyof IData;
 
-    setIsOrdered((prev) => ({
-      ...Object.keys(prev).reduce((acc, key) => {
-        acc[key as keyof IData] = false;
-        return acc;
-      }, {} as { [key in keyof IData]: boolean }),
-      [clickedKey]: !prev[clickedKey],
-    }));
+    setIsOrdered(prev => {
+      const data = { ...prev };
+
+      data[clickedKey] = !data[clickedKey];
+      for (const key of Object.keys(data)) {
+        if (key !== clickedKey) {
+          data[key as keyof IData] = false;
+        }
+      }
+      return data;
+    });
 
     list.sort((a, b) => {
       if (event.id === "startDate" || event.id === "birthDate") {
@@ -106,25 +110,22 @@ const Table: React.FC<IProps> = ({ list }): JSX.Element => {
         </tr>
         </thead>
         <tbody>
-        {list.map((employee, i) => {
-            return (
-              <tr key={i}
-                  className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:bg-sky-800`}>
-                <td
-                  className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.department}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.street}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.city}</td>
-                <td className="truncate px-1 py-3 text-center">{employee.state}</td>
-                <td
-                  className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{employee.zipCode}</td>
-              </tr>
-            );
-          },
-        )}
+        {list.map((employee, i) => (
+          <tr key={i}
+              className={`${i % 2 ? "bg-sky-950" : "bg-sky-900"} hover:bg-sky-800`}>
+            <td
+              className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-bl"}`}>{employee.firstName}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.lastName}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.startDate as string}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.department}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.birthDate as string}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.street}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.city}</td>
+            <td className="truncate px-1 py-3 text-center">{employee.state}</td>
+            <td
+              className={`truncate px-1 py-3 text-center ${i === list.length - 1 && "rounded-br"}`}>{employee.zipCode}</td>
+          </tr>
+        ))}
         </tbody>
       </table>
     </div>

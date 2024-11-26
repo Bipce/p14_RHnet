@@ -134,7 +134,7 @@ const Home = (): JSX.Element | null => {
             </div>
           </div>
 
-          <Button />
+          <Button text="Save" />
         </form>
       </div>
       {isModalOpen && (
