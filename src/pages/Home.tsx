@@ -1,6 +1,6 @@
 import React, { JSX, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { z, ZodType } from "zod";
+import { z, ZodStringDef, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
@@ -17,17 +17,29 @@ import { getPublicData, getWorkDepartments } from "../service/getPublicData.ts";
 import { addEmployee } from "../features/employeeSlice.ts";
 import { useUpdateEmployees } from "../hooks/useUpdateEmployees.ts";
 
+const stringValueSchema = (minLength: number): ZodType<string, ZodStringDef, string> | ZodType<string> => {
+  return z.string().min(minLength, { message: "Should be at least 2 characters" }).transform(capitalizeFirstLetter);
+};
+
+const capitalizeFirstLetter = (data: string): string => {
+  const firstLetter = data[0].toUpperCase();
+  const rest = data.slice(1, data.length);
+
+  return firstLetter.concat(rest);
+};
+
 const schema: ZodType<IData> = z.object({
-  firstName: z.string().min(2, { message: "Should be at least 2 characters" }),
-  lastName: z.string().min(2, { message: "Should be at least 2 characters" }),
-  street: z.string().min(2, { message: "Should be at least 2 characters" }),
-  city: z.string().min(2, { message: "Should be at least 2 characters" }),
-  state: z.string().min(2, { message: "Should be at least 2 characters" }),
+  firstName: stringValueSchema(2),
+  lastName: stringValueSchema(2),
+  street: stringValueSchema(2),
+  city: stringValueSchema(2),
+  state: stringValueSchema(2),
   zipCode: z.string().min(5, { message: "Should be exactly 5 digits" }).transform(nbr => parseInt(nbr)),
   department: z.string().min(1),
   birthDate: z.date({ message: "Birth date is required" }).transform(date => format(date, "MM/dd/yyyy")),
   startDate: z.date({ message: "Start date is required" }).transform(date => format(date, "MM/dd/yyyy")),
 });
+
 
 const Home = (): JSX.Element | null => {
   const {
