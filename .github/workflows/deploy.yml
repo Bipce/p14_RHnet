@@ -1,0 +1,63 @@
+name: Build & Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  DIST_FOLDER: ${{ github.workspace }}/dist
+
+jobs:
+  build:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies & Build
+        run: |
+          npm install -g yarn
+          yarn install
+          yarn build
+
+      - name: Copy deployment files to dist directory
+        run: cp -r ./deployment/. $DIST_FOLDER
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.DIST_FOLDER }}
+          push: true
+          tags: ${{ vars.DOCKER_USERNAME }}/hrnet:latest
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Update deployment
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ vars.DEPLOY_HOST }}
+          username: ${{ vars.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ~/services/portfolio
+            docker compose up -d
+            docker rmi -f $(docker images -f "dangling=true" -q) || true
